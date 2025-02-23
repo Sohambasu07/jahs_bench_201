@@ -3,7 +3,7 @@ from jahs_bench.lib.core.constants import Activations
 
 joint_config_space = CS.ConfigurationSpace("jahs_bench_config_space")
 # noinspection PyPep8
-joint_config_space.add_hyperparameters([
+joint_config_space.add([
     CS.OrdinalHyperparameter("N", sequence=[1, 3, 5], default_value=1,
                              meta=dict(help="Number of cell repetitions")),
     CS.OrdinalHyperparameter("W", sequence=[4, 8, 16], default_value=4,
@@ -54,4 +54,4 @@ weight_decay = CS.UniformFloatHyperparameter("WeightDecay", lower=1e-5, upper=1e
     default_value=5e-4, log=True, meta=dict(help="Weight decay to be used by the "
                                                  "optimizer during model training."))
 
-joint_config_space.add_hyperparameters([optimizers, lr, weight_decay])
+joint_config_space.add([optimizers, lr, weight_decay])

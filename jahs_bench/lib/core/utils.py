@@ -45,7 +45,7 @@ def adapt_search_space(
         config_space = original_space
         flag_cs_attr = False
 
-    known_params = {p.name: p for p in config_space.get_hyperparameters()}
+    known_params = {p.name: p for p in list(config_space.values())}
 
     def param_interpretor(param, value):
         known_config_space_value_types = {
@@ -73,7 +73,7 @@ def adapt_search_space(
     if modified:
         new_config_space = ConfigSpace.ConfigurationSpace(
             f"{config_space.name}{suffix if suffix is not None else ''}")
-        new_config_space.add_hyperparameters(known_params.values())
+        new_config_space.add(known_params.values())
         if flag_cs_attr:
             original_space.config_space = new_config_space
         else:

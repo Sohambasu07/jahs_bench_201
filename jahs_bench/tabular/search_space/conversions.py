@@ -138,7 +138,7 @@ def convert_nb201_str_to_naslib_obj(nb201_str, naslib_obj, change_search_space=F
             meta = dict(known_params[k].meta, **dict(constant_overwrite=True))
             known_params[k] = ConfigSpace.Constant(k, v, meta=meta)
         new_config_space = ConfigSpace.ConfigurationSpace(f"{config_space.name}_fixed_ops")
-        new_config_space.add_hyperparameters(known_params.values())
+        new_config_space.add(known_params.values())
 
         original_space.config_space = new_config_space
     else:

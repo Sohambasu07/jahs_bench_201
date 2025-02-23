@@ -731,7 +731,7 @@ def adapt_search_space(original_space: Union[NASB201HPOSearchSpace, ConfigSpace.
         config_space = original_space
         flag_cs_attr = False
 
-    known_params = {p.name: p for p in config_space.get_hyperparameters()}
+    known_params = {p.name: p for p in list(config_space.values())}
 
     def param_interpretor(param, value):
         known_config_space_value_types = {
@@ -756,7 +756,7 @@ def adapt_search_space(original_space: Union[NASB201HPOSearchSpace, ConfigSpace.
 
     if modified:
         new_config_space = ConfigSpace.ConfigurationSpace(f"{config_space.name}{suffix if suffix is not None else ''}")
-        new_config_space.add_hyperparameters(known_params.values())
+        new_config_space.add(known_params.values())
         if flag_cs_attr:
             original_space.config_space = new_config_space
         else:
@@ -778,7 +778,7 @@ def default_random_sampler(search_space: NASB201HPOSearchSpace, global_seed_gen:
         naslib_utils.set_seed(curr_global_seed)
         model: NASB201HPOSearchSpace = search_space.clone()
         model.sample_random_architecture(rng=rng)
-        model_config = model.config.get_dictionary()
+        model_config = dict(model.config)
         yield model, model_config, curr_global_seed
 
 
@@ -833,10 +833,10 @@ def model_sampler(search_space: NASB201HPOSearchSpace, taskid: int, global_seed_
                 model.clear()
                 model.config = ConfigSpace.Configuration(
                     model.config_space,
-                    {**model.config_space.get_default_configuration().get_dictionary(), **model_config}
+                    {**dict(model.config_space.get_default_configuration()), **model_config}
                 )
                 model._construct_graph()
-                model_config = model.config.get_dictionary()
+                model_config = dict(model.config)
                 yield model, model_config, curr_global_seed
 
         return sampler()

@@ -168,7 +168,7 @@ class Benchmark:
         table = pd.concat(tables, axis=0)
 
         # level_0_cols = ["features", "labels"]
-        features: list = joint_config_space.get_hyperparameter_names() + ["epoch"]
+        features: list = list(joint_config_space.keys()) + ["epoch"]
 
         if table["features"].columns.intersection(features).size != len(features):
             raise ValueError(f"The given performance datasets at {table_path} could not "
@@ -325,7 +325,7 @@ class Benchmark:
             config = row.to_dict()
         else:
             joint_config_space.random = random_state
-            config = joint_config_space.sample_configuration().get_dictionary()
+            config = dict(joint_config_space.sample_configuration())
             nepochs = random_state.randint(1, 200)
             config['epoch'] = nepochs
 

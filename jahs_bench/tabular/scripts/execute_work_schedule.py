@@ -115,7 +115,7 @@ def instantiate_model(model_config: dict, dataset: Datasets) -> NASB201HPOSearch
 
     assert utils.adapt_search_space(search_space, portfolio=None, taskid=None, opts=model_config, suffix=None), \
         f"Unable to restrict the search space to use the specified model configuration:\n{model_config}"
-    assert all([isinstance(h, ConfigSpace.Constant) for h in search_space.config_space.get_hyperparameters()]), \
+    assert all([isinstance(h, ConfigSpace.Constant) for h in list(search_space.config_space.values())]), \
         f"Failed to restrict all hyperparameters in the search space to the specified model configuration. The " \
         f"restricted space is defined by:\n{search_space.config_space}"
 

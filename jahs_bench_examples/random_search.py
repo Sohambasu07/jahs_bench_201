@@ -21,7 +21,7 @@ if __name__ == "__main__":
     results = []
     for it in range(N_ITERATIONS + 1):
         # Use benchmark ConfigSpace object to sample a random configuration.
-        config = joint_config_space.sample_configuration().get_dictionary()
+        config = dict(joint_config_space.sample_configuration())
         # Alternatively, define configuration as a dictionary.
         # config = {
         #     'Optimizer': 'SGD',

@@ -4,7 +4,7 @@ import copy
 import logging
 from functools import partial
 from pathlib import Path
-from typing import Union, Optional, Sequence, Tuple, Dict
+from typing import Any, Union, Optional, Sequence, Tuple, Dict
 
 import ConfigSpace
 import joblib
@@ -90,7 +90,7 @@ class XGBSurrogate:
                 "max_depth": int(np.random.choice(range(1, 15))),
                 "min_child_weight": int(np.random.choice(range(1, 10))),
                 "colsample_bytree": np.random.uniform(0.0, 1.0),
-                "learning_rate": loguniform(0.001, 0.5),
+                "learning_rate": scipy.stats.loguniform(0.001, 0.5),
                 # 'alpha': 0.24167936088332426,
                 # 'lambda': 31.393252465064943,
                 "colsample_bylevel": np.random.uniform(0.0, 1.0),
@@ -133,7 +133,7 @@ class XGBSurrogate:
     def preprocessing_pipeline(self):
         """ The pre-defined pre-processing pipeline used by the surrogate. """
 
-        params = self.config_space.get_hyperparameters()
+        params = list(self.config_space.values())
 
         # TODO: Add cache dir to speed up HPO
         # TODO: Read categorical choices from the config space
@@ -176,9 +176,9 @@ class XGBSurrogate:
         cs.random = random_state
 
         features = cs.sample_configuration(nconfigs)
-        features = np.array([list(c.get_dictionary().values()) for c in features])
+        features = np.array([list(dict(c).values()) for c in features])
         features = np.repeat(features, samples_per_config, axis=0)
-        features = pd.DataFrame(features, columns=cs.get_hyperparameter_names())
+        features = pd.DataFrame(features, columns=list(cs.keys()))
         epochs = pd.Series(np.tile(np.arange(1, samples_per_config + 1), nconfigs),
                            name="epoch")
         features.loc[:, "epoch"] = epochs

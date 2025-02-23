@@ -2,7 +2,7 @@ import ConfigSpace as CS
 from .constants import Activations
 
 joint_config_space = CS.ConfigurationSpace("NASB201HPO_joint_config_space")
-joint_config_space.add_hyperparameters([
+joint_config_space.add([
     CS.OrdinalHyperparameter("N", sequence=[1, 3, 5], default_value=1, meta=dict(help="Number of cell repetitions")),
     # CS.OrdinalHyperparameter("W", sequence=list(range(1, 4)), default_value=1,
     #                          meta=dict(help="The width of the three channels in the cell. The value of this "
@@ -52,4 +52,4 @@ weight_decay = CS.UniformFloatHyperparameter("WeightDecay", lower=1e-5, upper=1e
                                              meta=dict(help="Weight decay to be used by the optimizer during model "
                                                             "training."))
 
-joint_config_space.add_hyperparameters([optimizers, lr, weight_decay])
+joint_config_space.add([optimizers, lr, weight_decay])

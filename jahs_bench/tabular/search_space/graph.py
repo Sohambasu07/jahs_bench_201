@@ -180,7 +180,7 @@ class NASB201HPOSearchSpace(Graph):
     @config.setter
     def config(self, val: ConfigSpace.Configuration):
         try:
-            self.config_space.check_configuration(val)
+            val.check_valid_configuration()
         except Exception as e:
             raise RuntimeError(f"The given config value could not be verified against the configuration space."
                                f"\nConfiguration space: {str(self.config_space)}\nGiven config: {str(val)}") \
@@ -194,7 +194,7 @@ class NASB201HPOSearchSpace(Graph):
         return self.op_indices
 
     def get_hash(self):
-        return tuple(self.config.get_dictionary().items())
+        return tuple(dict(self.config).items())
 
     def set_op_indices(self, op_indices):
         # This will update the edges in the naslib object to op_indices
