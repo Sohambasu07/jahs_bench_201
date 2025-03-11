@@ -98,7 +98,7 @@ such as `wget`, from our archive.
 To download the full set of all surrogates models, run
 
 ```bash
-wget --no-parent -r https://ml.informatik.uni-freiburg.de/research-artifacts/jahs_bench_201/v1.0.0/assembled_surrogates.tar -O assembled_surrogates.tar
+wget --no-parent -r https://ml.informatik.uni-freiburg.de/research-artifacts/jahs_bench_201/v1.2.0/assembled_surrogates.tar -O assembled_surrogates.tar
 tar -xf assembled_surrogates.tar
 ```
 
